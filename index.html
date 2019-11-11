@@ -4,31 +4,16 @@
     <title>Simple Map</title>
     <meta name="viewport" content="initial-scale=1.0">
     <meta charset="utf-8">
-    <style>
-      /* Always set the map height explicitly to define the size of the div
-       * element that contains the map. */
-      #map {
-        height: 100%;
-      }
-      /* Optional: Makes the sample page fill the window. */
-      html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-      }
-    </style>
+    <link rel="stylesheet" href="style.css">
+    <script type="text/javascript" src="index.js"></script>
   </head>
   <body>
+    <div id="floating-panel">
+      <input id="latlng" type="text" value="">
+      <input id="submit" type="button" value="Reverse Geocode">
+    </div>
     <div id="map"></div>
-    <script>
-      var map;
-      function initMap() {
-        map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: -34.397, lng: 150.644},
-          zoom: 8
-        });
-      }
-    </script>
+
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA4KsBwrhZbB_bnjtmZi1x67YTMMWmtQuU&callback=initMap"
     async defer></script>
   </body>
