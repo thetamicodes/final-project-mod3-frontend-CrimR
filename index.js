@@ -98,7 +98,7 @@ function initMap() {
   });
 
   google.maps.event.addListener(map, 'click', function(event) {
-    
+
     const dataArray = [];
     dataArray.push(event.latLng);
     const latDetail = dataArray[0].lat();
@@ -135,5 +135,3 @@ function initMap() {
 
 document.addEventListener('DOMContentLoaded',function(){
 })
-
-
