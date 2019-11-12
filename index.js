@@ -90,12 +90,12 @@ function initMap() {
   }
   map = new google.maps.Map(document.getElementById("map"), myOptions);
 
-  var marker = new google.maps.Marker({
-    draggable: true,
-    position: myLatlng,
-    map: map,
-    title: "Your location"
-  });
+  // var marker = new google.maps.Marker({
+  //   draggable: true,
+  //   position: myLatlng,
+  //   map: map,
+  //   title: "Your location"
+  // });
 
   google.maps.event.addListener(map, 'click', function(event) {
 
@@ -119,13 +119,10 @@ function initMap() {
     }
 
     function renderCrimes(crime) {
-        const bodyEl = document.querySelector('body');
-        const resultEl = document.createElement('div');
-        resultEl.className = 'result-div';
+        const resultEl = document.querySelector('.result-div');
         resultEl.id = crime.category;
         const resultLi = document.createElement('li');
         resultLi.innerText = crime.category;
-        bodyEl.appendChild(resultEl);
         resultEl.append(resultLi);
     }
   });
