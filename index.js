@@ -112,23 +112,46 @@ function initMap() {
             return response.json()
         })
         .then(function(crimes) {
-            for (let i = 0; i < crimes.length; i++) {
-                renderCrimes(crimes[i])
-            }
+            crimeCounter(crimes)
+            singleCrime(crimes)
         })
     }
 
+    function singleCrime(crimes) {
+      for (let i = 0; i < crimes.length; i++) {
+          renderCrimes(crimes[i])
+      }
+    }
+
+    function crimeCounter(crimes) {
+      const textArea = document.querySelector('.leftColumn');
+      const crimeEl = document.createElement('p');
+      crimeEl.innerText = `This area has reported ${crimes.length} crimes in the last month.`;
+      textArea.appendChild(crimeEl);
+    }
+
     function renderCrimes(crime) {
-        const resultEl = document.querySelector('.result-div');
-        resultEl.id = crime.category;
-        const resultLi = document.createElement('li');
-        resultLi.innerText = crime.category;
-        resultEl.append(resultLi);
+        const resultEl = document.querySelector('.leftColumn');
+
+        const resultDiv = document.createElement('div');
+        // resultEl.className = 'result-div';
+        // resultEl.id = crime.category;
+        // resultP.innerText = crime.category
+
+        const streetName = crime.location.street.name
+        const crimeDate = crime.month
+        const currentStatus = crime.outcome_status.category
+        resultDiv.innerHTML = `
+        <li>${crime.category}</li>
+        <p>${streetName}: ${currentStatus}</p>
+        <p>Crime recorded at: ${crimeDate}</p>
+        `
+        resultEl.append(resultDiv);
     }
   });
 }
 
 // google.maps.event.addDomListener(window, 'load', initialize);
 
-document.addEventListener('DOMContentLoaded',function(){
-})
+// document.addEventListener('DOMContentLoaded',function(){
+// })
