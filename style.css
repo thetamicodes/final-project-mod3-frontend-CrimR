@@ -92,8 +92,7 @@ p {
 .inline-items li:last-child {
   padding-right: 0;
 }
-
-.btn-primary{
+.btn{
   background: #9ca5b3;
 }
 
