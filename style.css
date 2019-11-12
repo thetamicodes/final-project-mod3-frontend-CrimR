@@ -4,6 +4,14 @@
   box-sizing: border-box;
 }
 
+header {
+  background-color: #17263c;
+}
+
+footer {
+  background-color: darkgoldenrod;
+}
+
 body {
   margin: 0;
   font-family: Courier;
@@ -20,6 +28,8 @@ li {
 p{
   color: #9ca5b3;
 }
+
+
 
 .columnsContainer, footer, header {
   position: relative;
@@ -85,6 +95,7 @@ p{
 
 /* MEDIA QUERIES */
 @media screen and (min-width: 47.5em) {
+  
   .leftColumn {
     margin-right: 19.5em;
     height: 80vh;
