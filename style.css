@@ -48,6 +48,7 @@ p {
 
 .leftColumn {
   margin-bottom: .5em;
+  width: 59.5%;
 }
 
 #map {
@@ -93,8 +94,9 @@ p {
   padding-right: 0;
 }
 
-.btn-primary{
-  background: #9ca5b3;
+.btn.btn-primary {
+  background-color: #9ca5b3;
+  border-color: #9ca5b3;
 }
 
 /* MEDIA QUERIES */
@@ -108,6 +110,6 @@ p {
     position: absolute;
     top: 0;
     right: 0;
-    width: 18.75em;
+    width: 40%;
   }
 }
