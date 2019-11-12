@@ -6,11 +6,36 @@
     <meta charset="utf-8">
     <link rel="stylesheet" href="style.css">
     <script type="text/javascript" src="index.js"></script>
-  </head>
-  <body>
-    <div id="map"></div>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+  <header>
+     <nav>
+        <ul class="nav inline-items">
+          <li>SafetyMet</li>
+          <li><a href="#">My Places</a></li>
+       </ul>
+    </nav>
+  </header>
+
+  <div class="columnsContainer">
+    <div class="leftColumn">
+      <h2>Crime Statistics</h2>
+      
     </div>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA4KsBwrhZbB_bnjtmZi1x67YTMMWmtQuU&callback=initMap"
-    async defer></script>
-  </body>
+
+    <div class="rightColumn">
+      <div id="map">
+      </div>
+    </div>
+  </div>
+
+
+  <footer>
+    <p>Crime facts of the day etc.</p>
+  </footer>
+
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA4KsBwrhZbB_bnjtmZi1x67YTMMWmtQuU&callback=initMap"
+      async defer></script>
+</body>
 </html>
