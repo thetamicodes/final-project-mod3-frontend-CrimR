@@ -165,9 +165,15 @@ document.addEventListener("DOMContentLoaded", () => {
       const textArea = document.querySelector('.leftColumn');
       const crimeEl = document.createElement('p');
       const streetName = crimes[0].location.street.name
+      const properStreet = streetName.slice(0, 1).toLowerCase() + streetName.slice(1, streetName.length)
+      crimeEl.innerText = `${crimes.length} crimes reported ${properStreet} in ${crimes[0].month}`;
+      if (crimes.length === 0 || crimes.length > 1) {
+        crimeEl.innerText = `${crimes.length} crimes reported ${properStreet} in ${crimes[0].month}`;
+      } else {
+        crimeEl.innerText = `${crimes.length} crime reported ${properStreet} in ${crimes[0].month}`;
+      }
       textArea.innerHTML = `
       <h2>Crime Statistics</h2>
-      <p>${crimes.length} Crimes reported ${streetName} in the last month.</p>
       <input class="btn btn-primary" type="submit" value="Save This Place">
       `;
       const saveButton = textArea.querySelector('.btn')
@@ -175,25 +181,19 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function renderCrimes(crime) {
-      if (document.querySelector('.crime-div') === true) {
-        document.querySelector('.crime-div').remove();
-      } else {
-        const resultEl = document.querySelector('.leftColumn');
-        const resultDiv = document.createElement('div');
-        resultDiv.classList.add('crime-div')
-        const streetName = crime.location.street.name
-        const crimeDate = crime.month
-        const currentStatus = crime.outcome_status.category
-        const crimeCategory = crime.category
-        const splitCrime = crimeCategory.split("-")
-        const capCrime = splitCrime.map(word => word.charAt(0).toUpperCase() + word.slice(1))
-        const fixedCrime = capCrime.join(" ")
-        resultDiv.innerHTML = `
+      const resultEl = document.querySelector('.leftColumn');
+      const resultDiv = document.createElement('div');
+      resultDiv.classList.add('crime-div')
+      const currentStatus = crime ? crime.outcome_status.category : "Status Unknown"
+      const crimeCategory = crime.category
+      const splitCrime = crimeCategory.split("-")
+      const capCrime = splitCrime.map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      const fixedCrime = capCrime.join(" ")
+      resultDiv.innerHTML = `
         <li>${fixedCrime}</li>
-        <p>${currentStatus}</p>
+        <p>Status: ${currentStatus}</p>
         `
-        resultEl.append(resultDiv);
-      }
+      resultEl.append(resultDiv);
     }
   }
 })
