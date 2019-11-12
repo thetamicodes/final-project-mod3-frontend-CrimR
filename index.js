@@ -124,6 +124,7 @@ function initMap() {
     }
 
     function crimeCounter(crimes) {
+      debugger
       const textArea = document.querySelector('.leftColumn');
       const crimeEl = document.createElement('p');
       crimeEl.innerText = `This area has reported ${crimes.length} crimes in the last month.`;
