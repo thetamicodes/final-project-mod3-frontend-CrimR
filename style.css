@@ -14,7 +14,19 @@ footer {
 
 body {
   margin: 0;
-  background-color: black;
+  font-family: Courier;
+
+}
+
+h2{
+color: #9ca5b3;
+}
+
+li {
+  color: #9ca5b3;
+}
+p{
+  color: #9ca5b3;
 }
 
 
@@ -26,10 +38,10 @@ body {
 .rightColumn{
   border: 1px solid #ccc;
   height:100%;
-
 }
-.leftColumn, footer, header,#map {
+.leftColumn, footer, header {
   border: 1px solid #ccc;
+  background: #38414e;
   padding: 1.25em;
   height:100%;
 }
@@ -42,10 +54,7 @@ body {
   height: 100%;
   width: 100%;
   float: right;
-  overflow: hidden;
   flex: 50%;
-  background-color: white;
-  /* padding: 50px; */
 }
 
 .nav {
@@ -90,6 +99,7 @@ body {
   .leftColumn {
     margin-right: 19.5em;
     height: 80vh;
+
   }
 
   .rightColumn {
@@ -99,4 +109,3 @@ body {
     width: 18.75em;
   }
 }
-

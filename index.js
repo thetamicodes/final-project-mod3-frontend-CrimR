@@ -90,69 +90,60 @@ function initMap() {
   }
   map = new google.maps.Map(document.getElementById("map"), myOptions);
 
-  // var marker = new google.maps.Marker({
-  //   draggable: true,
-  //   position: myLatlng,
-  //   map: map,
-  //   title: "Your location"
-  // });
-
   google.maps.event.addListener(map, 'click', function(event) {
-
     const dataArray = [];
     dataArray.push(event.latLng);
     const latDetail = dataArray[0].lat();
     const lngDetail = dataArray[0].lng();
-
     fetchCrimeData(latDetail, lngDetail);
-
-    function fetchCrimeData(latDetail, lngDetail) {
-        return fetch(`https://data.police.uk/api/crimes-at-location?&lat=${latDetail}&lng=${lngDetail}`)
-        .then(function(response) {
-            return response.json()
-        })
-        .then(function(crimes) {
-            crimeCounter(crimes)
-            singleCrime(crimes)
-        })
-    }
-
-    function singleCrime(crimes) {
-      for (let i = 0; i < crimes.length; i++) {
-          renderCrimes(crimes[i])
-      }
-    }
-
-    function crimeCounter(crimes) {
-      debugger
-      const textArea = document.querySelector('.leftColumn');
-      const crimeEl = document.createElement('p');
-      crimeEl.innerText = `This area has reported ${crimes.length} crimes in the last month.`;
-      textArea.appendChild(crimeEl);
-    }
-
-    function renderCrimes(crime) {
-        const resultEl = document.querySelector('.leftColumn');
-
-        const resultDiv = document.createElement('div');
-        // resultEl.className = 'result-div';
-        // resultEl.id = crime.category;
-        // resultP.innerText = crime.category
-
-        const streetName = crime.location.street.name
-        const crimeDate = crime.month
-        const currentStatus = crime.outcome_status.category
-        resultDiv.innerHTML = `
-        <li>${crime.category}</li>
-        <p>${streetName}: ${currentStatus}</p>
-        <p>Crime recorded at: ${crimeDate}</p>
-        `
-        resultEl.append(resultDiv);
-    }
   });
+
+  function fetchCrimeData(latDetail, lngDetail) {
+      return fetch(`https://data.police.uk/api/crimes-at-location?&lat=${latDetail}&lng=${lngDetail}`)
+      .then(function(response) {
+          return response.json()
+      })
+      .then(function(crimes) {
+          crimeCounter(crimes)
+          singleCrime(crimes)
+
+      })
+  }
+
+  function singleCrime(crimes) {
+    for (let i = 0; i < crimes.length; i++) {
+        renderCrimes(crimes[i])
+    }
+  }
+
+  function crimeCounter(crimes) {
+    const textArea = document.querySelector('.leftColumn');
+    const crimeEl = document.createElement('p');
+    const streetName = crimes[0].location.street.name
+    debugger
+    crimeEl.innerText = `${crimes.length} Crimes reported ${streetName} in the last month.`;
+    textArea.appendChild(crimeEl);
+  }
+
+  function renderCrimes(crime) {
+    if (document.querySelector('.crime-div') === true){
+      document.querySelector('.crime-div').remove();
+      }else{
+      const resultEl = document.querySelector('.leftColumn');
+      const resultDiv = document.createElement('div');
+      resultDiv.classList.add('crime-div')
+      const streetName = crime.location.street.name
+      const crimeDate = crime.month
+      const currentStatus = crime.outcome_status.category
+      const crimeCategory = crime.category
+      const splitCrime = crimeCategory.split("-")
+      const capCrime = splitCrime.map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      const fixedCrime = capCrime.join(" ")
+      resultDiv.innerHTML = `
+      <li>${fixedCrime}</li>
+      <p>${currentStatus}</p>
+      `
+      resultEl.append(resultDiv);
+      }
+  }
 }
-
-// google.maps.event.addDomListener(window, 'load', initialize);
-
-// document.addEventListener('DOMContentLoaded',function(){
-// })
