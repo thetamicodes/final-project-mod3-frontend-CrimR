@@ -102,6 +102,19 @@ color: white;
   border-color: #9ca5b3;
 }
 
+.delete-btn {
+  background-color: #9ca5b3;
+  border: none;
+  color: white;
+  padding: 5px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  border-radius: 10px;
+}
+
 /* MEDIA QUERIES */
 @media screen and (min-width: 47.5em) {
   .leftColumn {
