@@ -1,5 +1,6 @@
-document.addEventListener("DOMContentLoaded", () => {
-  initMap()
+document.addEventListener("DOMContentLoaded", function() {
+
+  initMap();
   var map;
 
   function initMap() {
@@ -174,10 +175,17 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       textArea.innerHTML = `
       <h2>Crime Statistics</h2>
+      <br>
+      <form name="saveForm">
+      <p>Description: <input type="text" name="description" placeholder="Add the description of this area, i.e. work place" size="40"></p>
       <input class="btn btn-primary" type="submit" value="Save this Place">
+      </form>
+      <br>
       `;
-      const saveButton = textArea.querySelector('.btn')
       textArea.appendChild(crimeEl);
+
+      const saveButton = document.querySelector('.btn');
+      saveButton.addEventListener('submit', saveUserPlace(crimes));
     }
 
     function renderCrimes(crime) {
@@ -195,6 +203,38 @@ document.addEventListener("DOMContentLoaded", () => {
         `
       resultEl.append(resultDiv);
     }
+
+    function saveUserPlace(crimes) {
+      // const areaInfo = crimes[0].location.street.name;
+      // const descInfo = textArea.querySelector('input[name="description"]').value;
+      // const latInfo = parseInt(crimes[0].location.latitude);
+      // const lngInfo = parseInt(crimes[0].location.longitude);
+      // // const user_id = null
+      
+      // const configObj = {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //     "Accept": "application/json"
+      //   },
+      //   body: JSON.stringify({
+      //     area: areaInfo,
+      //     description: descInfo,
+      //     latitude: latInfo,
+      //     longitude: lngInfo,
+      //     // userId: user_id
+      //   })
+      // }
+
+      // return fetch('http://localhost:3000/locations', configObj)
+      // .then(function(response) {
+      //   return response.json()
+      // })
+      // .then(function(json) {
+      //   return json
+      // })
+    }
+
   }
 
   const userPlaces = document.querySelector(".places")
@@ -208,3 +248,4 @@ document.addEventListener("DOMContentLoaded", () => {
   })
 
 })
+  
