@@ -202,7 +202,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return fetch('http://localhost:3000/locations')
     .then (res => res.json())
     .then(locations => {
-      debugger
+      
     })
 
   })
