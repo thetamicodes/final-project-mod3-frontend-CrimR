@@ -174,7 +174,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       textArea.innerHTML = `
       <h2>Crime Statistics</h2>
-      <input class="btn btn-primary" type="submit" value="Save This Place">
+      <input class="btn btn-primary" type="submit" value="Save this Place">
       `;
       const saveButton = textArea.querySelector('.btn')
       textArea.appendChild(crimeEl);
@@ -184,7 +184,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const resultEl = document.querySelector('.leftColumn');
       const resultDiv = document.createElement('div');
       resultDiv.classList.add('crime-div')
-      const currentStatus = crime ? crime.outcome_status.category : "Status Unknown"
+      const currentStatus = crime ? crime.outcome_status.category : "Status unknown"
       const crimeCategory = crime.category
       const splitCrime = crimeCategory.split("-")
       const capCrime = splitCrime.map(word => word.charAt(0).toUpperCase() + word.slice(1))
@@ -196,4 +196,15 @@ document.addEventListener("DOMContentLoaded", () => {
       resultEl.append(resultDiv);
     }
   }
+
+  const userPlaces = document.querySelector(".places")
+  userPlaces.addEventListener('click', (e)=>{
+    return fetch('http://localhost:3000/locations')
+    .then (res => res.json())
+    .then(locations => {
+      debugger
+    })
+
+  })
+
 })
