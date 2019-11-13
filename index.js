@@ -256,18 +256,36 @@ document.addEventListener("DOMContentLoaded", () => {
     const textDiv = document.querySelector('.leftColumn');
     // textDiv.innerHTML = `<h2>My saved Places</h2>`
 
+    const locationId = location.id
+
     const locDiv = document.createElement('div');
     locDiv.className = "locations-div";
     locDiv.innerHTML = `
+    <br>
     <h3>${location.description}</h3>
-    <h4 class="area-class">${location.area}</h4>
+    <h4 class="area-class">${location.area}</h4><button class="delete-btn-${locationId}">Delete Area</button>
+    <br>
     `
     textDiv.appendChild(locDiv);
 
     document.querySelector('h2').innerText = "My saved Places";
 
-    const latData = location.latitude;
-    const lngData = location.longitude;
+    const deleteButton = document.querySelector(`.delete-btn-${locationId}`);
+    deleteButton.addEventListener('click', (e)=>{
+      deleteUserPlace(e, locationId);
+    })
   }
 
+  function deleteUserPlace(e, locationId) {
+    return fetch(`http://localhost:3000/locations/${locationId}`, { method: "DELETE" })
+      // .then(res => res.json())
+      .then(function(location){
+        e.target.parentNode.remove()
+      })
+  }
+
+
+
+
 })
+
