@@ -254,11 +254,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function showLocations(location) {
     const textDiv = document.querySelector('.leftColumn');
-    // textDiv.innerHTML = `<h2>My saved Places</h2>`
-
     const locationId = location.id
-
     const locDiv = document.createElement('div');
+
     locDiv.className = "locations-div";
     locDiv.innerHTML = `
     <br>
@@ -268,12 +266,22 @@ document.addEventListener("DOMContentLoaded", () => {
     `
     textDiv.appendChild(locDiv);
 
+    locDiv.querySelector(".area-class").addEventListener('click', () =>{
+      showAreaStatistics(location)
+    })
+
     document.querySelector('h2').innerText = "My saved Places";
 
     const deleteButton = document.querySelector(`.delete-btn-${locationId}`);
     deleteButton.addEventListener('click', (e)=>{
       deleteUserPlace(e, locationId);
     })
+  }
+
+  function showAreaStatistics(location){
+    const lat = location.latitude
+    const long = location.longitude
+    fetchCrimeData(lat,long)
   }
 
   function deleteUserPlace(e, locationId) {
@@ -284,8 +292,4 @@ document.addEventListener("DOMContentLoaded", () => {
       })
   }
 
-
-
-
 })
-
