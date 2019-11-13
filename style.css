@@ -57,7 +57,9 @@ p {
   float: right;
   flex: 50%;
 }
-
+.area-class:hover{
+color: white;
+}
 .nav {
   list-style: none;
   margin-left: 0;
