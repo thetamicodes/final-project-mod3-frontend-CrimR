@@ -107,6 +107,7 @@ color: white;
   .leftColumn {
     margin-right: 19.5em;
     height: 80vh;
+    overflow: scroll;
   }
 
   .rightColumn {

@@ -141,8 +141,6 @@ document.addEventListener("DOMContentLoaded", () => {
       dataArray.push(event.latLng);
       const latDetail = dataArray[0].lat();
       const lngDetail = dataArray[0].lng();
-      debugger
-
       fetchCrimeData(latDetail, lngDetail);
     });
   }
@@ -187,7 +185,9 @@ document.addEventListener("DOMContentLoaded", () => {
       textArea.appendChild(crimeEl);
 
       const saveButton = document.querySelector('.btn');
-      saveButton.addEventListener('submit', saveUserPlace(crimes));
+      saveButton.addEventListener('click', (e)=>{
+        saveUserPlace(crimes, textArea);
+      })
     }
 
     function renderCrimes(crime) {
@@ -206,13 +206,15 @@ document.addEventListener("DOMContentLoaded", () => {
       resultEl.append(resultDiv);
     }
 
-    function saveUserPlace(crimes) {
+    function saveUserPlace(crimes, textArea) {
       const areaInfo = crimes[0].location.street.name;
-      const descInfo = textArea.querySelector('input[name="description"]').value;
-      const latInfo = parseInt(crimes[0].location.latitude);
-      const lngInfo = parseInt(crimes[0].location.longitude);
+      const descInfo = textArea.querySelector("input[placeholder='Add the description of this area, i.e. work place']").value
+      debugger
+
+      const latInfo = crimes[0].location.latitude
+      const lngInfo = crimes[0].location.longitude
       // const user_id = null
-      
+
       const configObj = {
         method: "POST",
         headers: {
@@ -224,7 +226,7 @@ document.addEventListener("DOMContentLoaded", () => {
           description: descInfo,
           latitude: latInfo,
           longitude: lngInfo,
-          // userId: user_id
+          user_id: 6
         })
       }
 
@@ -250,17 +252,50 @@ document.addEventListener("DOMContentLoaded", () => {
       })
   })
 
+  // function showLocations(location) {
+  //   const area = location.area
+  //   const areaType = location.description
+  //   const latDetail = location.latitude
+  //   const lngDetail = location.longitude
+  //   const textArea = document.querySelector('.leftColumn')
+  //   const locationDiv = document.createElement('div')
+  //   locationDiv.classList.add("location-div")
+  //   locationDiv.innerHTML = `
+  //   <h3>${areaType}</h3>
+  //   <h4>${area}</h4>
+  //   `
+  //
+  //   // // textArea.innerHTML = `<h2>My Places</h2>`
+  //   // const descrEl = document.createElement('h3');
+  //   // descrEl.innerHTML = areaType;
+  //   // const areaEl = document.createElement('h4');
+  //   // areaEl.className = "area-class";
+  //   // areaEl.innerText = area;
+  //   // textArea.appendChild(descrEl)
+  //   // textArea.appendChild(areaEl)
+  //   textArea.innerHTML = `
+  //   <h3>${areaType}</h3>
+  //   <h4>${area}</h4>
+  //   `
+  //   textArea.append(locationDiv)
+  //
+  //   // const areaClick = textArea.querySelector('.area-class')
+  //   // areaClick.addEventListener('click', () => {
+  //   //   fetchCrimeData(latDetail, lngDetail)
+  //   // })
+  // }
+
   function showLocations(location) {
     const area = location.area
     const areaType = location.description
     const latDetail = location.latitude
     const lngDetail = location.longitude
     const textArea = document.querySelector('.leftColumn')
-    textArea.innerHTML = `
-    <h2>My Places</h2>
-    <h3>${areaType}</h3>
-    <h4 class="area-class">${area}</h4>
-    `
+
+    textArea.innerHTML = `${area}`
+
+    // textArea.appendChild(areaEl)
+
     const areaClick = textArea.querySelector('.area-class')
     areaClick.addEventListener('click', () => {
       fetchCrimeData(latDetail, lngDetail)
@@ -268,7 +303,3 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 })
-
-
-  
-
