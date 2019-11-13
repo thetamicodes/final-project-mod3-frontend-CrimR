@@ -141,8 +141,11 @@ document.addEventListener("DOMContentLoaded", () => {
       dataArray.push(event.latLng);
       const latDetail = dataArray[0].lat();
       const lngDetail = dataArray[0].lng();
+      debugger
+
       fetchCrimeData(latDetail, lngDetail);
     });
+  }
 
     function fetchCrimeData(latDetail, lngDetail) {
       return fetch(`https://data.police.uk/api/crimes-at-location?&lat=${latDetail}&lng=${lngDetail}`)
@@ -195,16 +198,34 @@ document.addEventListener("DOMContentLoaded", () => {
         `
       resultEl.append(resultDiv);
     }
-  }
+
 
   const userPlaces = document.querySelector(".places")
-  userPlaces.addEventListener('click', (e)=>{
+  userPlaces.addEventListener('click', () => {
     return fetch('http://localhost:3000/locations')
-    .then (res => res.json())
-    .then(locations => {
-      
-    })
-
+      .then(res => res.json())
+      .then(locations => {
+        for (const location of locations) {
+          showLocations(location)
+        }
+      })
   })
+
+  function showLocations(location) {
+    const area = location.area
+    const areaType = location.description
+    const latDetail = location.latitude
+    const lngDetail = location.longitude
+    const textArea = document.querySelector('.leftColumn')
+    textArea.innerHTML = `
+    <h2>My Places</h2>
+    <h3>${areaType}</h3>
+    <h4 class="area-class">${area}</h4>
+    `
+    const areaClick = textArea.querySelector('.area-class')
+    areaClick.addEventListener('click', () => {
+      fetchCrimeData(latDetail, lngDetail)
+    })
+  }
 
 })
