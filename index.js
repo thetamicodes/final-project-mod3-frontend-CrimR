@@ -196,4 +196,15 @@ document.addEventListener("DOMContentLoaded", () => {
       resultEl.append(resultDiv);
     }
   }
+
+  const userPlaces = document.querySelector(".places")
+  userPlaces.addEventListener('click', (e)=>{
+    return fetch('http://localhost:3000/locations')
+    .then (res => res.json())
+    .then(locations => {
+      debugger
+    })
+
+  })
+
 })
