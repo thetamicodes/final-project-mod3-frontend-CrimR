@@ -224,7 +224,7 @@ document.addEventListener("DOMContentLoaded", () => {
           description: descInfo,
           latitude: latInfo,
           longitude: lngInfo,
-          userId: 6
+          user_id: 6
         })
       }
 
@@ -242,20 +242,20 @@ document.addEventListener("DOMContentLoaded", () => {
   const userPlaces = document.querySelector(".places")
   userPlaces.addEventListener('click', () => {
     document.querySelector('p').remove();
-    document.querySelector('iframe').remove();      
+    document.querySelector('iframe').remove();
     return fetch('http://localhost:3000/locations')
       .then(res => res.json())
       .then(function(locations){
         for (let i = 0; i < locations.length; i++) {
           showLocations(locations[i])
         }
-      }) 
+      })
   })
 
   function showLocations(location) {
     const textDiv = document.querySelector('.leftColumn');
     // textDiv.innerHTML = `<h2>My saved Places</h2>`
-  
+
     const locDiv = document.createElement('div');
     locDiv.className = "locations-div";
     locDiv.innerHTML = `
@@ -268,56 +268,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const latData = location.latitude;
     const lngData = location.longitude;
-
   }
-
-  
-
-  // function showLocations(location) {
-  //   const area = location.area
-  //   const areaType = location.description
-  //   const latDetail = location.latitude
-  //   const lngDetail = location.longitude
-  //   const textArea = document.querySelector('.leftColumn')
-  //   const locationDiv = document.createElement('div')
-  //   locationDiv.classList.add("location-div")
-  //   locationDiv.innerHTML = `
-  //   <h3>${areaType}</h3>
-  //   <h4>${area}</h4>
-  //   `
-  
-  //   textArea.innerHTML = `<h2>My Places</h2>`
-  //   const descrEl = document.createElement('h3');
-  //   descrEl.innerHTML = areaType;
-  //   const areaEl = document.createElement('h4');
-  //   areaEl.className = "area-class";
-  //   areaEl.innerText = area;
-  //   textArea.appendChild(descrEl)
-  //   textArea.appendChild(areaEl)
-  //   textArea.innerHTML = `
-  //   <h3>${areaType}</h3>
-  //   <h4>${area}</h4>
-  //   `
-  //   textArea.append(locationDiv)
-  
-    
-  // }
-
-  // function showLocations(location) {
-  //   const area = location.area
-  //   const areaType = location.description
-  //   const latDetail = location.latitude
-  //   const lngDetail = location.longitude
-  //   const textArea = document.querySelector('.leftColumn')
-
-  //   textArea.innerHTML = `${area}`
-
-  //   // textArea.appendChild(areaEl)
-
-  //   const areaClick = textArea.querySelector('.area-class')
-  //   areaClick.addEventListener('click', () => {
-  //     fetchCrimeData(latDetail, lngDetail)
-  //   })
-  // }
 
 })
