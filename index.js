@@ -1,5 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
-  initMap()
+  
+  initMap();
+  homePageReload();
   var map;
 
   function initMap() {
@@ -145,99 +147,98 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-    function fetchCrimeData(latDetail, lngDetail) {
-      return fetch(`https://data.police.uk/api/crimes-at-location?&lat=${latDetail}&lng=${lngDetail}`)
-        .then(function(response) {
-          return response.json()
-        })
-        .then(function(crimes) {
-          crimeCounter(crimes)
-          singleCrime(crimes)
-        })
-    }
-
-    function singleCrime(crimes) {
-      for (let i = 0; i < crimes.length; i++) {
-        renderCrimes(crimes[i])
-      }
-    }
-
-    function crimeCounter(crimes) {
-      const textArea = document.querySelector('.leftColumn');
-      const crimeEl = document.createElement('p');
-      const streetName = crimes[0].location.street.name
-      const properStreet = streetName.slice(0, 1).toLowerCase() + streetName.slice(1, streetName.length)
-      crimeEl.innerText = `${crimes.length} crimes reported ${properStreet} in ${crimes[0].month}`;
-      if (crimes.length === 0 || crimes.length > 1) {
-        crimeEl.innerText = `${crimes.length} crimes reported ${properStreet} in ${crimes[0].month}`;
-      } else {
-        crimeEl.innerText = `${crimes.length} crime reported ${properStreet} in ${crimes[0].month}`;
-      }
-      textArea.innerHTML = `
-      <h2>Crime Statistics</h2>
-      <br>
-      <form name="saveForm">
-      <p>Description: <input type="text" name="description" placeholder="Add the description of this area, i.e. work place" size="40"></p>
-      <input class="btn btn-primary" type="submit" value="Save this Place">
-      </form>
-      <br>
-      `;
-      textArea.appendChild(crimeEl);
-
-      const saveButton = document.querySelector('.btn');
-      saveButton.addEventListener('click', (e)=>{
-        saveUserPlace(crimes, textArea);
-      })
-    }
-
-    function renderCrimes(crime) {
-      const resultEl = document.querySelector('.leftColumn');
-      const resultDiv = document.createElement('div');
-      resultDiv.classList.add('crime-div')
-      const currentStatus = crime ? crime.outcome_status.category : "Status unknown"
-      const crimeCategory = crime.category
-      const splitCrime = crimeCategory.split("-")
-      const capCrime = splitCrime.map(word => word.charAt(0).toUpperCase() + word.slice(1))
-      const fixedCrime = capCrime.join(" ")
-      resultDiv.innerHTML = `
-        <li>${fixedCrime}</li>
-        <p>Status: ${currentStatus}</p>
-        `
-      resultEl.append(resultDiv);
-    }
-
-    function saveUserPlace(crimes, textArea) {
-      const areaInfo = crimes[0].location.street.name;
-      const descInfo = textArea.querySelector("input[placeholder='Add the description of this area, i.e. work place']").value
-      const latInfo = crimes[0].location.latitude
-      const lngInfo = crimes[0].location.longitude
-      // const user_id = null
-
-      const configObj = {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json"
-        },
-        body: JSON.stringify({
-          area: areaInfo,
-          description: descInfo,
-          latitude: latInfo,
-          longitude: lngInfo,
-          user_id: 6
-        })
-      }
-
-      return fetch('http://localhost:3000/locations', configObj)
+  function fetchCrimeData(latDetail, lngDetail) {
+    return fetch(`https://data.police.uk/api/crimes-at-location?&lat=${latDetail}&lng=${lngDetail}`)
       .then(function(response) {
         return response.json()
       })
-      .then(function(json) {
-        return json
+      .then(function(crimes) {
+        crimeCounter(crimes)
+        singleCrime(crimes)
+      })
+  }
+
+  function singleCrime(crimes) {
+    for (let i = 0; i < crimes.length; i++) {
+      renderCrimes(crimes[i])
+    }
+  }
+
+  function crimeCounter(crimes) {
+    const textArea = document.querySelector('.leftColumn');
+    const crimeEl = document.createElement('p');
+    const streetName = crimes[0].location.street.name
+    const properStreet = streetName.slice(0, 1).toLowerCase() + streetName.slice(1, streetName.length)
+    crimeEl.innerText = `${crimes.length} crimes reported ${properStreet} in ${crimes[0].month}`;
+    if (crimes.length === 0 || crimes.length > 1) {
+      crimeEl.innerText = `${crimes.length} crimes reported ${properStreet} in ${crimes[0].month}`;
+    } else {
+      crimeEl.innerText = `${crimes.length} crime reported ${properStreet} in ${crimes[0].month}`;
+    }
+    textArea.innerHTML = `
+    <h2>Crime Statistics</h2>
+    <br>
+    <form name="saveForm">
+    <p>Description: <input type="text" name="description" placeholder="Add the description of this area, i.e. work place" size="40"></p>
+    <input class="btn btn-primary" type="submit" value="Save this Place">
+    </form>
+    <br>
+    `;
+    textArea.appendChild(crimeEl);
+
+    const saveButton = document.querySelector('.btn');
+    
+    saveButton.addEventListener('click', (e)=>{
+      saveUserPlace(crimes, textArea);
+    })
+  }
+
+  function renderCrimes(crime) {
+    const resultEl = document.querySelector('.leftColumn');
+    const resultDiv = document.createElement('div');
+    resultDiv.classList.add('crime-div')
+    const currentStatus = crime ? crime.outcome_status.category : "Status unknown"
+    const crimeCategory = crime.category
+    const splitCrime = crimeCategory.split("-")
+    const capCrime = splitCrime.map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    const fixedCrime = capCrime.join(" ")
+    resultDiv.innerHTML = `
+    <li>${fixedCrime}</li>
+    <p>Status: ${currentStatus}</p>
+    `
+    resultEl.append(resultDiv);
+  }
+
+  function saveUserPlace(crimes, textArea) {
+    const areaInfo = crimes[0].location.street.name;
+    const descInfo = textArea.querySelector("input[placeholder='Add the description of this area, i.e. work place']").value
+    const latInfo = crimes[0].location.latitude
+    const lngInfo = crimes[0].location.longitude
+    // const user_id = null
+
+    const configObj = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      body: JSON.stringify({
+        area: areaInfo,
+        description: descInfo,
+        latitude: latInfo,
+        longitude: lngInfo,
+        user_id: 6
       })
     }
 
-
+    return fetch('http://localhost:3000/locations', configObj)
+    .then(function(response) {
+      return response.json()
+    })
+    .then(function(json) {
+      return json
+    })
+  }
 
   const userPlaces = document.querySelector(".places")
   userPlaces.addEventListener('click', () => {
@@ -292,4 +293,12 @@ document.addEventListener("DOMContentLoaded", () => {
       })
   }
 
+  function homePageReload() {
+    const homeBtn = document.querySelector('.homepage');
+    homeBtn.addEventListener('click', function() {
+      location.reload();
+    })
+  }
+
 })
+
