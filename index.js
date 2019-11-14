@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
       zoom: 13,
       center: myLatlng,
       mapTypeId: google.maps.MapTypeId.ROADMAP,
-      styles: mapStyles
+      styles: mapStyles //This variable is defined in mapStyle.js
     }
 
     map = new google.maps.Map(document.getElementById("map"), myOptions);
@@ -26,13 +26,17 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function fetchCrimeData(latDetail, lngDetail) {
-    return fetch(`https://data.police.uk/api/crimes-at-location?&lat=${latDetail}&lng=${lngDetail}`)
+    return fetch(`https://data.police.uk/api/crimes-at-location?lat=${latDetail}&lng=${lngDetail}`)
       .then(function(response) {
         return response.json()
       })
       .then(function(crimes) {
-        crimeCounter(crimes);
-        singleCrime(crimes);
+        if (crimes.length === 0) {
+        console.log("Hello")
+        } else {
+          crimeCounter(crimes)
+          singleCrime(crimes)
+        }
       })
   }
 
@@ -45,9 +49,8 @@ document.addEventListener("DOMContentLoaded", () => {
   function crimeCounter(crimes) {
     const textArea = document.querySelector('.leftColumn');
     const crimeEl = document.createElement('p');
-    const streetName = crimes[0].location.street.name
+    const streetName = crimes[0].location ? crimes[0].location.street.name : "Location unverified."
     const properStreet = streetName.slice(0, 1).toLowerCase() + streetName.slice(1, streetName.length)
-
     crimeEl.innerText = `${crimes.length} crimes reported ${properStreet} in ${crimes[0].month}`;
     if (crimes.length === 0 || crimes.length > 1) {
       crimeEl.innerText = `${crimes.length} crimes reported ${properStreet} in ${crimes[0].month}`;
@@ -76,7 +79,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const resultDiv = document.createElement('div');
     resultDiv.classList.add('crime-div')
 
-    const currentStatus = crime ? crime.outcome_status.category : "Status unknown"
+    const currentStatus = crime.outcome_status ? crime.outcome_status.category : "Status unknown"
+
     const crimeCategory = crime.category
 
     const splitCrime = crimeCategory.split("-")
@@ -157,9 +161,7 @@ document.addEventListener("DOMContentLoaded", () => {
     locDiv.querySelector(".area-class").addEventListener('click', () => {
       showAreaStatistics(location)
     })
-
     document.querySelector('h2').innerText = "My saved Places";
-
     const deleteButton = document.querySelector(`.delete-btn-${locationId}`);
     deleteButton.addEventListener('click', (e) => {
       deleteUserPlace(e, locationId);
@@ -195,9 +197,9 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     .then(function(data) {
       genderData(data)
-    })   
+    })
   }
-  
+
   function genderData(data) {
     const genderArray = data.map(function(crime) {
       return crime.gender
@@ -207,7 +209,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let femaleCount = 0;
     let maleCount = 0;
     let restCount = 0;
-    
+
     for (let i = 0; i < genderArray.length; i++) {
       if (genderArray[i] == "Female")
         femaleCount++;
@@ -227,7 +229,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let maleCountPerc = ((maleCount / totalCount) * 100).toFixed(1) + ' %'
 
     const footer = document.querySelector('footer');
-    const factsEl = footer.querySelector('p');
+    const factsEl = footer.querySelector('li');
     factsEl.innerText = `Did you know: In September 2019, around ${maleCountPerc} of all crimes were committed by males (leaving around ${femaleCountPerc} committed by females, out of a total crimes of ${totalCount} within that month in London)`
   }
 
