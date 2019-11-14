@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   initMap();
   homePageReload();
+  randomFacts();
 
   var map;
 
@@ -30,8 +31,8 @@ document.addEventListener("DOMContentLoaded", () => {
         return response.json()
       })
       .then(function(crimes) {
-        crimeCounter(crimes)
-        singleCrime(crimes)
+        crimeCounter(crimes);
+        singleCrime(crimes);
       })
   }
 
@@ -185,6 +186,49 @@ document.addEventListener("DOMContentLoaded", () => {
     homeBtn.addEventListener('click', function() {
       location.reload();
     })
+  }
+
+  function randomFacts() {
+    return fetch('https://data.police.uk/api/stops-street?lat=51.509865&lng=-0.118092&date=2019-09')
+    .then(function(response) {
+      return response.json()
+    })
+    .then(function(data) {
+      genderData(data)
+    })   
+  }
+  
+  function genderData(data) {
+    const genderArray = data.map(function(crime) {
+      return crime.gender
+    })
+
+    const totalCount = genderArray.length
+    let femaleCount = 0;
+    let maleCount = 0;
+    let restCount = 0;
+    
+    for (let i = 0; i < genderArray.length; i++) {
+      if (genderArray[i] == "Female")
+        femaleCount++;
+    }
+
+    for (let i = 0; i < genderArray.length; i++) {
+      if (genderArray[i] == "Male")
+        maleCount++;
+    }
+
+    for (let i = 0; i < genderArray.length; i++) {
+      if (genderArray[i] == null)
+        restCount++;
+    }
+
+    let femaleCountPerc = ((femaleCount / totalCount) * 100).toFixed(1) + ' %'
+    let maleCountPerc = ((maleCount / totalCount) * 100).toFixed(1) + ' %'
+
+    const footer = document.querySelector('footer');
+    const factsEl = footer.querySelector('p');
+    factsEl.innerText = `Did you know: In September 2019, around ${maleCountPerc} of all crimes were committed by males (leaving around ${femaleCountPerc} committed by females, out of a total crimes of ${totalCount} within that month in London)`
   }
 
 })
