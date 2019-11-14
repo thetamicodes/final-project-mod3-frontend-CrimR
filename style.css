@@ -35,12 +35,12 @@ p {
 }
 
 .rightColumn {
-  border: 1px solid #ccc;
+  /* border: 1px solid #ccc; */
   height: 100%;
 }
 
 .leftColumn, footer, header {
-  border: 1px solid #ccc;
+  /* border: 1px solid #ccc; */
   background: #38414e;
   padding: 1.25em;
   height: 100%;
@@ -128,5 +128,15 @@ color: white;
     top: 0;
     right: 0;
     width: 40%;
+  }
+
+  .nav.inline-items {
+    font-weight: bold;
+    font-size: 30px;
+  }
+
+  .places {
+    font-size: 30px;
+    font-weight: normal;
   }
 }
