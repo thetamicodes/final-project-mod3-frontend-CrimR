@@ -1,143 +1,20 @@
 document.addEventListener("DOMContentLoaded", () => {
-  
+
   initMap();
   homePageReload();
+
   var map;
 
   function initMap() {
     var myLatlng = new google.maps.LatLng(51.509865, -0.118092);
-
     var myOptions = {
       zoom: 13,
       center: myLatlng,
       mapTypeId: google.maps.MapTypeId.ROADMAP,
-      styles: [{
-          elementType: 'geometry',
-          stylers: [{
-            color: '#242f3e'
-          }]
-        },
-        {
-          elementType: 'labels.text.stroke',
-          stylers: [{
-            color: '#242f3e'
-          }]
-        },
-        {
-          elementType: 'labels.text.fill',
-          stylers: [{
-            color: '#746855'
-          }]
-        },
-        {
-          featureType: 'administrative.locality',
-          elementType: 'labels.text.fill',
-          stylers: [{
-            color: '#d59563'
-          }]
-        },
-        {
-          featureType: 'poi',
-          elementType: 'labels.text.fill',
-          stylers: [{
-            color: '#d59563'
-          }]
-        },
-        {
-          featureType: 'poi.park',
-          elementType: 'geometry',
-          stylers: [{
-            color: '#263c3f'
-          }]
-        },
-        {
-          featureType: 'poi.park',
-          elementType: 'labels.text.fill',
-          stylers: [{
-            color: '#6b9a76'
-          }]
-        },
-        {
-          featureType: 'road',
-          elementType: 'geometry',
-          stylers: [{
-            color: '#38414e'
-          }]
-        },
-        {
-          featureType: 'road',
-          elementType: 'geometry.stroke',
-          stylers: [{
-            color: '#212a37'
-          }]
-        },
-        {
-          featureType: 'road',
-          elementType: 'labels.text.fill',
-          stylers: [{
-            color: '#9ca5b3'
-          }]
-        },
-        {
-          featureType: 'road.highway',
-          elementType: 'geometry',
-          stylers: [{
-            color: '#746855'
-          }]
-        },
-        {
-          featureType: 'road.highway',
-          elementType: 'geometry.stroke',
-          stylers: [{
-            color: '#1f2835'
-          }]
-        },
-        {
-          featureType: 'road.highway',
-          elementType: 'labels.text.fill',
-          stylers: [{
-            color: '#f3d19c'
-          }]
-        },
-        {
-          featureType: 'transit',
-          elementType: 'geometry',
-          stylers: [{
-            color: '#2f3948'
-          }]
-        },
-        {
-          featureType: 'transit.station',
-          elementType: 'labels.text.fill',
-          stylers: [{
-            color: '#d59563'
-          }]
-        },
-        {
-          featureType: 'water',
-          elementType: 'geometry',
-          stylers: [{
-            color: '#17263c'
-          }]
-        },
-        {
-          featureType: 'water',
-          elementType: 'labels.text.fill',
-          stylers: [{
-            color: '#515c6d'
-          }]
-        },
-        {
-          featureType: 'water',
-          elementType: 'labels.text.stroke',
-          stylers: [{
-            color: '#17263c'
-          }]
-        }
-      ]
+      styles: mapStyles
     }
-    map = new google.maps.Map(document.getElementById("map"), myOptions);
 
+    map = new google.maps.Map(document.getElementById("map"), myOptions);
     google.maps.event.addListener(map, 'click', function(event) {
       const dataArray = [];
       dataArray.push(event.latLng);
@@ -159,8 +36,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function singleCrime(crimes) {
-    for (let i = 0; i < crimes.length; i++) {
-      renderCrimes(crimes[i])
+    for (const crime of crimes) {
+      renderCrimes(crime)
     }
   }
 
@@ -169,12 +46,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const crimeEl = document.createElement('p');
     const streetName = crimes[0].location.street.name
     const properStreet = streetName.slice(0, 1).toLowerCase() + streetName.slice(1, streetName.length)
+
     crimeEl.innerText = `${crimes.length} crimes reported ${properStreet} in ${crimes[0].month}`;
     if (crimes.length === 0 || crimes.length > 1) {
       crimeEl.innerText = `${crimes.length} crimes reported ${properStreet} in ${crimes[0].month}`;
     } else {
       crimeEl.innerText = `${crimes.length} crime reported ${properStreet} in ${crimes[0].month}`;
     }
+
     textArea.innerHTML = `
     <h2>Crime Statistics</h2>
     <br>
@@ -182,13 +61,11 @@ document.addEventListener("DOMContentLoaded", () => {
     <p>Description: <input type="text" name="description" placeholder="Add the description of this area, i.e. work place" size="40"></p>
     <input class="btn btn-primary" type="submit" value="Save this Place">
     </form>
-    <br>
-    `;
+    <br>`
     textArea.appendChild(crimeEl);
 
     const saveButton = document.querySelector('.btn');
-    
-    saveButton.addEventListener('click', (e)=>{
+    saveButton.addEventListener('click', (e) => {
       saveUserPlace(crimes, textArea);
     })
   }
@@ -197,13 +74,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const resultEl = document.querySelector('.leftColumn');
     const resultDiv = document.createElement('div');
     resultDiv.classList.add('crime-div')
+
     const currentStatus = crime ? crime.outcome_status.category : "Status unknown"
     const crimeCategory = crime.category
+
     const splitCrime = crimeCategory.split("-")
     const capCrime = splitCrime.map(word => word.charAt(0).toUpperCase() + word.slice(1))
     const fixedCrime = capCrime.join(" ")
+
     resultDiv.innerHTML = `
-    <li>${fixedCrime}</li>
+    <li class="crime-list">${fixedCrime}</li>
     <p>Status: ${currentStatus}</p>
     `
     resultEl.append(resultDiv);
@@ -214,7 +94,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const descInfo = textArea.querySelector("input[placeholder='Add the description of this area, i.e. work place']").value
     const latInfo = crimes[0].location.latitude
     const lngInfo = crimes[0].location.longitude
-    // const user_id = null
 
     const configObj = {
       method: "POST",
@@ -232,21 +111,19 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     return fetch('http://localhost:3000/locations', configObj)
-    .then(function(response) {
-      return response.json()
-    })
-    .then(function(json) {
-      return json
-    })
+      .then(function(response) {
+        return response.json()
+      })
+      .then(function(json) {
+        return json
+      })
   }
 
   const userPlaces = document.querySelector(".places")
   userPlaces.addEventListener('click', () => {
-    document.querySelector('p').remove();
-    document.querySelector('iframe').remove();
     return fetch('http://localhost:3000/locations')
       .then(res => res.json())
-      .then(function(locations){
+      .then(function(locations) {
         for (let i = 0; i < locations.length; i++) {
           showLocations(locations[i])
         }
@@ -254,7 +131,16 @@ document.addEventListener("DOMContentLoaded", () => {
   })
 
   function showLocations(location) {
+    const tweets = document.querySelector('iframe')
+    const tweetsStatus = tweets ? tweets.remove() : tweets
+    const info = document.querySelectorAll('p')
+    const infoStatus = info ? info.forEach(el => el.remove()) : info
+    const saveButton = document.querySelector('.btn')
+    const buttonStatus = saveButton ? saveButton.remove() : saveButton
+    const listItem = document.querySelectorAll('.crime-list')
+    const listStatus = listItem ? listItem.forEach(el => el.remove()) : listItem
     const textDiv = document.querySelector('.leftColumn');
+    const textUl = document.querySelector('.columnsContainer')
     const locationId = location.id
     const locDiv = document.createElement('div');
 
@@ -267,28 +153,29 @@ document.addEventListener("DOMContentLoaded", () => {
     `
     textDiv.appendChild(locDiv);
 
-    locDiv.querySelector(".area-class").addEventListener('click', () =>{
+    locDiv.querySelector(".area-class").addEventListener('click', () => {
       showAreaStatistics(location)
     })
 
     document.querySelector('h2').innerText = "My saved Places";
 
     const deleteButton = document.querySelector(`.delete-btn-${locationId}`);
-    deleteButton.addEventListener('click', (e)=>{
+    deleteButton.addEventListener('click', (e) => {
       deleteUserPlace(e, locationId);
     })
   }
 
-  function showAreaStatistics(location){
+  function showAreaStatistics(location) {
     const lat = location.latitude
     const long = location.longitude
-    fetchCrimeData(lat,long)
+    fetchCrimeData(lat, long)
   }
 
   function deleteUserPlace(e, locationId) {
-    return fetch(`http://localhost:3000/locations/${locationId}`, { method: "DELETE" })
-      // .then(res => res.json())
-      .then(function(location){
+    return fetch(`http://localhost:3000/locations/${locationId}`, {
+        method: "DELETE"
+      })
+      .then(function(location) {
         e.target.parentNode.remove()
       })
   }
@@ -301,4 +188,3 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 })
-
