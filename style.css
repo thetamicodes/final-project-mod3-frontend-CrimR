@@ -13,14 +13,17 @@ header {
   background-color: #17263c;
 }
 
-footer {}
+h6 {
+  color: #9ca5b3;
+  text-align: center;
+}
 
 body {
   margin: 0;
   font-family: Courier;
 }
 
-h2 {
+h2, h3, h4 {
   color: #9ca5b3;
 }
 
@@ -108,13 +111,9 @@ p {
   padding-right: 0;
 }
 
-.btn.btn-primary {
+.btn.btn-primary, #delete-btn {
   background-color: #9ca5b3;
   border-color: #9ca5b3;
-}
-
-.delete-btn {
-  background-color: #9ca5b3;
   border: none;
   color: white;
   padding: 5px;
@@ -122,8 +121,8 @@ p {
   text-decoration: none;
   display: inline-block;
   font-size: 16px;
-  margin: 4px 2px;
-  border-radius: 10px;
+  margin: 2px 1px;
+  border-radius: 5px;
 }
 
 /* MEDIA QUERIES */

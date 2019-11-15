@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
     <br>
     <form name="saveForm">
     <p>Description: <input type="text" name="description" placeholder="Add the description of this area, i.e. work place" size="40"></p>
-    <input class="btn btn-primary" type="submit" value="Save this Place">
+    <button class="btn btn-primary" type="submit">Save this Place</button>
     </form>
     <br>`
     textArea.appendChild(crimeEl);
@@ -153,7 +153,7 @@ document.addEventListener("DOMContentLoaded", () => {
     locDiv.innerHTML = `
     <br>
     <h3>${location.description}</h3>
-    <h4 class="area-class">${location.area}</h4><button class="delete-btn-${locationId}">Delete Area</button>
+    <h4 class="area-class">${location.area}</h4><button class="delete-btn-${locationId}" id="delete-btn">Delete Area</button>
     <br>
     `
     textDiv.appendChild(locDiv);
@@ -196,7 +196,11 @@ document.addEventListener("DOMContentLoaded", () => {
       return response.json()
     })
     .then(function(data) {
-      genderData(data)
+      if (Math.floor(Math.random() * Math.floor(2))){
+        genderData(data)
+      }else{
+        ageData(data)
+      }    
     })
   }
 
@@ -211,26 +215,40 @@ document.addEventListener("DOMContentLoaded", () => {
     let restCount = 0;
 
     for (let i = 0; i < genderArray.length; i++) {
-      if (genderArray[i] == "Female")
+      if (genderArray[i] == "Female") {
         femaleCount++;
-    }
-
-    for (let i = 0; i < genderArray.length; i++) {
-      if (genderArray[i] == "Male")
+      } else if (genderArray[i] == "Male") {
         maleCount++;
-    }
-
-    for (let i = 0; i < genderArray.length; i++) {
-      if (genderArray[i] == null)
+      } else if (genderArray[i] == null) {
         restCount++;
+        restCount;
+      }
     }
-
+      
     let femaleCountPerc = ((femaleCount / totalCount) * 100).toFixed(1) + ' %'
     let maleCountPerc = ((maleCount / totalCount) * 100).toFixed(1) + ' %'
 
     const footer = document.querySelector('footer');
-    const factsEl = footer.querySelector('li');
+    const factsEl = footer.querySelector('h6');
     factsEl.innerText = `Did you know: In September 2019, around ${maleCountPerc} of all crimes were committed by males (leaving around ${femaleCountPerc} committed by females, out of a total crimes of ${totalCount} within that month in London)`
   }
+
+  function ageData(data){
+    const ageRanges = data.map(function(crime) {
+      return crime.age_range
+    })
+    const filteredAge = ageRanges.filter(age => age )
+    const ageBracket = filteredAge.filter(age => !age.includes("over"))
+    const ageBrackety = filteredAge.filter(age => age.includes("over"))
+    const ages = ageBracket.map(age => age.slice(-2))
+    const agesIntegers = ages.map(Number)
+    const underAgers = agesIntegers.filter(age => age  === 17)
+    const amountOfUnderAgers = underAgers.length
+    const amountOfCrimes = filteredAge.length
+
+    const footer = document.querySelector('footer');
+    const factsEl = footer.querySelector('h6');
+    factsEl.innerText = `Did you know: Out of ${ageRanges.length} committed last month, only ${amountOfUnderAgers} were committed by people under the age of 18.`
+    }
 
 })
