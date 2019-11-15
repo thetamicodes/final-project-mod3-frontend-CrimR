@@ -183,6 +183,32 @@ document.addEventListener("DOMContentLoaded", () => {
     const lat = location.latitude
     const long = location.longitude
     fetchCrimeData(lat, long)
+    mapFunction(lat,long)
+  }
+
+  function mapFunction(lat,long) {
+    var myLatlng = new google.maps.LatLng(lat, long);
+    var myOptions = {
+      zoom: 15,
+      center: myLatlng,
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+      styles: mapStyles //This variable is defined in mapStyle.js
+    }
+
+    map = new google.maps.Map(document.getElementById("map"), myOptions);
+    var marker = new google.maps.Marker({
+    draggable: false,
+    position: myLatlng,
+    map: map
+    });
+
+    google.maps.event.addListener(map, 'click', function(event) {
+      const dataArray = [];
+      dataArray.push(event.latLng);
+      const latDetail = dataArray[0].lat();
+      const lngDetail = dataArray[0].lng();
+      fetchCrimeData(latDetail, lngDetail);
+    });
   }
 
   function deleteUserPlace(e, locationId) {
