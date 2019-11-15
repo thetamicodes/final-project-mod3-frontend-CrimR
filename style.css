@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Muli&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Titillium+Web&display=swap');
-
+@import url('https://fonts.googleapis.com/css?family=Bebas+Neue&display=swap');
 *, *:before, *:after {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
@@ -17,10 +17,13 @@ h6 {
   color: #9ca5b3;
   text-align: center;
 }
-
+a{
+  text-decoration: none !important;
+}
 body {
   margin: 0;
   font-family: Courier;
+  background-color:#212a37 !important;
 }
 
 h2, h3, h4 {
@@ -34,6 +37,23 @@ li {
 p {
   color: #9ca5b3;
 }
+
+.homepage {
+  font-family: 'Bebas Neue', cursive;
+  color: #fff;
+  font-size: 2rem;
+  letter-spacing: 10px;
+  text-shadow:
+    0 0 20px black,
+    0 0 80px black,
+    0 0 10px black,
+    0 0 15px #515c6d;
+}
+
+.homepage:hover {
+  color: black;
+}
+
 
 .columnsContainer, footer, header {
   position: relative;
@@ -64,14 +84,6 @@ p {
 }
 
 .area-class:hover {
-  color: white;
-}
-
-.homepage {
-  font-family: "Andale Mono", monospace;
-}
-
-.homepage:hover {
   color: white;
 }
 
