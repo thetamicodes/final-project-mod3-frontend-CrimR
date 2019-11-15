@@ -78,11 +78,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const resultEl = document.querySelector('.leftColumn');
     const resultDiv = document.createElement('div');
     resultDiv.classList.add('crime-div')
-
     const currentStatus = crime.outcome_status ? crime.outcome_status.category : "Status unknown"
-
     const crimeCategory = crime.category
-
     const splitCrime = crimeCategory.split("-")
     const capCrime = splitCrime.map(word => word.charAt(0).toUpperCase() + word.slice(1))
     const fixedCrime = capCrime.join(" ")
@@ -129,13 +126,22 @@ document.addEventListener("DOMContentLoaded", () => {
     return fetch('http://localhost:3000/locations')
       .then(res => res.json())
       .then(function(locations) {
-        for (let i = 0; i < locations.length; i++) {
-          showLocations(locations[i])
+        if (locations.length === 0){
+          showNoPlacesErrorPage()
+        }else{
+          const textDiv = document.querySelector('.leftColumn');
+          textDiv.innerHTML = ""
+          const title = document.createElement('h2')
+          title.innerText = "My saved Places";
+          textDiv.append(title)
+          for (const location of locations) {
+          showLocations(location)
+        }
         }
       })
   })
 
-  function showLocations(location) {
+  function showNoPlacesErrorPage(){
     const tweets = document.querySelector('iframe')
     const tweetsStatus = tweets ? tweets.remove() : tweets
     const info = document.querySelectorAll('p')
@@ -146,9 +152,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const listStatus = listItem ? listItem.forEach(el => el.remove()) : listItem
     const textDiv = document.querySelector('.leftColumn');
     const textUl = document.querySelector('.columnsContainer')
+    const locDiv = document.createElement('div');
+    textDiv.innerHTML =`<h4>Please click on the map and save a location!</h4>`
+  }
+
+  function showLocations(location) {
+    const textDiv = document.querySelector('.leftColumn');
+    const textUl = document.querySelector('.columnsContainer')
     const locationId = location.id
     const locDiv = document.createElement('div');
-
     locDiv.className = "locations-div";
     locDiv.innerHTML = `
     <br>
@@ -161,7 +173,6 @@ document.addEventListener("DOMContentLoaded", () => {
     locDiv.querySelector(".area-class").addEventListener('click', () => {
       showAreaStatistics(location)
     })
-    document.querySelector('h2').innerText = "My saved Places";
     const deleteButton = document.querySelector(`.delete-btn-${locationId}`);
     deleteButton.addEventListener('click', (e) => {
       deleteUserPlace(e, locationId);
@@ -200,7 +211,7 @@ document.addEventListener("DOMContentLoaded", () => {
         genderData(data)
       }else{
         ageData(data)
-      }    
+      }
     })
   }
 
@@ -208,7 +219,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const genderArray = data.map(function(crime) {
       return crime.gender
     })
-
     const totalCount = genderArray.length
     let femaleCount = 0;
     let maleCount = 0;
@@ -224,10 +234,8 @@ document.addEventListener("DOMContentLoaded", () => {
         restCount;
       }
     }
-      
     let femaleCountPerc = ((femaleCount / totalCount) * 100).toFixed(1) + ' %'
     let maleCountPerc = ((maleCount / totalCount) * 100).toFixed(1) + ' %'
-
     const footer = document.querySelector('footer');
     const factsEl = footer.querySelector('h6');
     factsEl.innerText = `Did you know: In September 2019, around ${maleCountPerc} of all crimes were committed by males (leaving around ${femaleCountPerc} committed by females, out of a total crimes of ${totalCount} within that month in London)`
@@ -239,13 +247,11 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     const filteredAge = ageRanges.filter(age => age )
     const ageBracket = filteredAge.filter(age => !age.includes("over"))
-    const ageBrackety = filteredAge.filter(age => age.includes("over"))
     const ages = ageBracket.map(age => age.slice(-2))
     const agesIntegers = ages.map(Number)
     const underAgers = agesIntegers.filter(age => age  === 17)
     const amountOfUnderAgers = underAgers.length
     const amountOfCrimes = filteredAge.length
-
     const footer = document.querySelector('footer');
     const factsEl = footer.querySelector('h6');
     factsEl.innerText = `Did you know: Out of ${ageRanges.length} committed last month, only ${amountOfUnderAgers} were committed by people under the age of 18.`
